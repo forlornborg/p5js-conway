@@ -10,7 +10,8 @@ class Cell{
         //constructor will give each cell the rect() arguments and make it alive
         this.alive = alive_,
         this.x = x_;
-        this.y = y_; 
+        this.y = y_;
+        this.numLivingNeighbors = 0; 
     }
 }
 
@@ -24,7 +25,8 @@ var cellSystem = {};
 
 function setup(){
     createCanvas(windowWidth,windowHeight);
-    background(0);
+    noStroke();
+    background(255);
     numWidth = 20;
     numHeight = 20;
 
@@ -46,15 +48,51 @@ function setup(){
                 }else{
                     fill(175);
                 }
-                rect(this.cellArr[i].x, this.cellArr[i].y, this.w, this.h);
+                ellipse(this.cellArr[i].x, this.cellArr[i].y, this.w, this.h);
             }
         },
+        getNeighbors: function(){
+            for(var i = 0; i < this.cellArr.length; i++){
+                var numLivingNeighbors = 0;
+                //todo protect against wrapping around the edge in the future
+                var topNeighbor = this.cellArr[i-numWidth];
+                var rightNeighbor = this.cellArr[i+1];
+                var bottomNeighbor = this.cellArr[i+numWidth];
+                var leftNeighbor = this.cellArr[i-1];
+                var topLeftNeighbor = this.cellArr[i-numWidth-1];
+                var topRightNeighbor = this.cellArr[i-numWidth+1];
+                var bottomRightNeighbor = this.cellArr[i+numWidth+1];
+                var bottomLeftNeighbor = this.cellArr[i+numWidth-1];
+                var neighbors = [topNeighbor, rightNeighbor, bottomNeighbor, leftNeighbor, topRightNeighbor, topLeftNeighbor, bottomLeftNeighbor, bottomRightNeighbor];
+                for(var j = 0; j < neighbors.length; j++){
+                    if(neighbors[j] && neighbors[j].alive){
+                        numLivingNeighbors++;
+                    }
+                    this.cellArr[i].numLivingNeighbors = numLivingNeighbors;
+                }
+            }
+        },
+        update: function(){
+            for(var i = 0; i < this.cellArr.length; i++){
+                if(this.cellArr[i].alive){
+                    if(this.cellArr[i].numLivingNeighbors < 2){
+                        this.cellArr[i].alive = false;
+                    }else if(this.cellArr[i].numLivingNeighbors > 3){
+                        this.cellArr[i].alive = false;
+                    }
+                }else{
+                    if(this.cellArr[i].numLivingNeighbors == 3){
+                        this.cellArr[i].alive = true;
+                    }
+                }
+            }
+        }
     }
-
     cellSystem.genCells();
 }
 
 function draw(){
     cellSystem.displayCells();
-
+    cellSystem.getNeighbors();
+    cellSystem.update();
 }
