@@ -27,8 +27,8 @@ function setup(){
     createCanvas(windowWidth,windowHeight);
     noStroke();
     background(255);
-    numWidth = 20;
-    numHeight = 20;
+    numWidth = 10;
+    numHeight = 10;
 
     cellSystem = {
         w: windowWidth/numWidth,
@@ -48,7 +48,7 @@ function setup(){
                 }else{
                     fill(175);
                 }
-                ellipse(this.cellArr[i].x, this.cellArr[i].y, this.w, this.h);
+                rect(this.cellArr[i].x, this.cellArr[i].y, this.w, this.h);
             }
         },
         getNeighbors: function(){
@@ -95,4 +95,8 @@ function draw(){
     cellSystem.displayCells();
     cellSystem.getNeighbors();
     cellSystem.update();
+
+    if(mouseIsPressed){
+        cellSystem.genCells();
+    }
 }
