@@ -27,8 +27,8 @@ function setup(){
     createCanvas(windowWidth,windowHeight);
     noStroke();
     background(255);
-    numWidth = 10;
-    numHeight = 10;
+    numWidth = 100;
+    numHeight = 100;
 
     cellSystem = {
         w: windowWidth/numWidth,
@@ -48,6 +48,7 @@ function setup(){
                 }else{
                     fill(175);
                 }
+                noStroke();
                 rect(this.cellArr[i].x, this.cellArr[i].y, this.w, this.h);
             }
         },
