@@ -6,3 +6,5 @@ todo: fix wrapping around the edges
     use more Cell object functions. Ex: killCell()
 
 forlornstore.com/conway
+
+updated
